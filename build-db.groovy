@@ -22,7 +22,7 @@ pipeline {
                 container('kubectl') {
                     script {
                         sh """
-                            sudo kubectl apply -f db-deployment.yaml
+                            kubectl apply -f db-deployment.yaml
                         """
                     }
                 }
