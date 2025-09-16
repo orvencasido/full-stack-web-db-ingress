@@ -13,10 +13,17 @@ spec:
         app: oracle-db
     spec:
       containers:
-        - name: oracle-xe
-          image: gvenzl/oracle-xe:21.3.0-slim
-          ports:
-            - containerPort: 1521
-          env:
-            - name: ORACLE_PASSWORD
-              value: "1234"
+      - name: oracle-xe
+        image: gvenzl/oracle-xe:21.3.0-slim
+        ports:
+        - containerPort: 1521
+        env:
+        - name: ORACLE_PASSWORD
+          value: "1234"
+        volumeMounts:
+        - name: hr-vol
+          mountPath: /opt/hr   # Files inside pod
+      volumes:
+      - name: hr-vol
+        persistentVolumeClaim:
+          claimName: hr-pvc

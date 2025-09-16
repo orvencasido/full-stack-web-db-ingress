@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hr-schema
-data:
-  hr_install.sql: |
-    @/opt/human_resources/hr_install.sql
-    ALTER USER hr IDENTIFIED BY hr1234 ACCOUNT UNLOCK;
-    
