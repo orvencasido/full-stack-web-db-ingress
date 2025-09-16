@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Employee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-start p-8 font-sans">
+
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Delete Employee</h2>
+
+  <form id="delete-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-lg space-y-4">
+    <input type="number" id="employee_id" placeholder="Employee ID" required class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full">Delete</button>
+  </form>
+
+  <a href="index.html" class="mt-4 text-blue-500 hover:text-blue-700 font-semibold">Employee List</a>
+
+  <script>
+    const form = document.getElementById("delete-form");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const empId = document.getElementById("employee_id").value;
+
+      fetch("http://3.0.51.150:5000/api/delete_employee", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ employee_id: parseInt(empId) })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert(`Employee deleted: ID ${data.employee_id}`);
+          form.reset();
+        } else {
+          alert(`Error: ${data.message}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

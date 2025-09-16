@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employees</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-8 font-sans">
+
+  <h1 class="text-4xl font-bold text-gray-800 mb-6">Employee List</h1>
+
+  <div class="overflow-x-auto w-full max-w-5xl mb-6">
+    <table class="min-w-full bg-white shadow rounded-lg">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">ID</th>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">First Name</th>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">Last Name</th>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">Email</th>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">Hire Date</th>
+          <th class="py-3 px-6 text-left font-semibold text-gray-700">Job ID</th>
+        </tr>
+      </thead>
+      <tbody id="employee-list" class="divide-y divide-gray-200">
+        <!-- Employee rows will be appended here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="space-x-4">
+    <a href="update.html" class="text-white bg-blue-500 hover:bg-blue-700 font-semibold py-2 px-4 rounded">Update</a>
+    <a href="insert.html" class="text-white bg-green-500 hover:bg-green-700 font-semibold py-2 px-4 rounded">Insert</a>
+    <a href="delete.html" class="text-white bg-red-500 hover:bg-red-700 font-semibold py-2 px-4 rounded">Delete</a>
+  </div>
+
+  <script>
+    fetch("http://3.0.51.150:5000/api/employees")
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById("employee-list");
+        data.forEach(emp => {
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-gray-100";
+
+          tr.innerHTML = `
+            <td class="py-2 px-6 text-gray-700">${emp.employee_id}</td>
+            <td class="py-2 px-6 text-gray-700">${emp.first_name}</td>
+            <td class="py-2 px-6 text-gray-700">${emp.last_name}</td>
+            <td class="py-2 px-6 text-gray-700">${emp.email || '-'}</td>
+            <td class="py-2 px-6 text-gray-700">${emp.hire_date || '-'}</td>
+            <td class="py-2 px-6 text-gray-700">${emp.job_id || '-'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  </script>
+</body>
+</html>

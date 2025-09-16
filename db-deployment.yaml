@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oracle-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-db
+  template:
+    metadata:
+      labels:
+        app: oracle-db
+    spec:
+      containers:
+        - name: oracle-xe
+          image: gvenzl/oracle-xe:21.3.0-slim
+          ports:
+            - containerPort: 1521
+          env:
+            - name: ORACLE_PASSWORD
+              value: "1234"

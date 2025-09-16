@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Insert Employee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-start p-8 font-sans">
+
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Insert Employee</h2>
+
+  <form id="insert-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-lg space-y-4">
+    <input type="number" id="employee_id" placeholder="Employee ID" required class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <input type="text" id="first_name" placeholder="First Name" required class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <input type="text" id="last_name" placeholder="Last Name" required class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <input type="email" id="email" placeholder="Email (optional)" class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <input type="text" id="hire_date" placeholder="Hire Date (DD-MM-YYYY, optional)" class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <input type="text" id="job_id" placeholder="Job ID (optional)" class="shadow border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">Insert</button>
+  </form>
+
+  <a href="index.html" class="mt-4 text-blue-500 hover:text-blue-700 font-semibold">Employee List</a>
+
+  <script>
+    const form = document.getElementById("insert-form");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const empId = document.getElementById("employee_id").value;
+      const firstName = document.getElementById("first_name").value;
+      const lastName = document.getElementById("last_name").value;
+      const email = document.getElementById("email").value;
+      const hireDate = document.getElementById("hire_date").value;
+      const jobId = document.getElementById("job_id").value;
+
+      fetch("http://3.0.51.150:5000/api/insert_employee", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employee_id: parseInt(empId),
+          first_name: firstName,
+          last_name: lastName,
+          email: email || undefined,
+          hire_date: hireDate || undefined,
+          job_id: jobId || undefined
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert(`Employee inserted: ${data.first_name} ${data.last_name}`);
+          form.reset();
+        } else {
+          alert(`Error: ${data.message}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
