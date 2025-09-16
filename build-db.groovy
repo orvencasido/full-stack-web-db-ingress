@@ -17,16 +17,12 @@ pipeline {
             } 
         } 
 
-        stage ('run') {
+        stage ('deploy db to k8s') {
             steps {
                 container('kubectl') {
                     script {
                         sh """
-                            sudo docker run -d --name oracle-xe \
-                            -p 1521:1521 \
-                            -e ORACLE_PASSWORD="1234" \
-                            -v $HOME/db-sample-schemas/human_resources:/opt/human_resources:ro \
-                            gvenzl/oracle-xe:21.3.0-slim
+                            k apply -f db-deployment.yaml
                         """
                     }
                 }
