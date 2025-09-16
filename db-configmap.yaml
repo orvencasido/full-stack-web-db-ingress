@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hr-files
+data:
+  hr_install.sql: |
+    @/opt/hr/hr_populate.sql
+    ALTER USER hr IDENTIFIED BY hr1234 ACCOUNT UNLOCK;
+    

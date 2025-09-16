@@ -12,6 +12,15 @@ spec:
       labels:
         app: oracle-db
     spec:
+      initContainers:
+      - name: copy-hr-sql
+        image: busybox
+        command: ['sh', '-c', 'cp -r /tmp/hr/* /opt/hr']
+        volumeMounts:
+        - name: hr-vol
+          mountPath: /opt/hr
+        - name: hr-src
+          mountPath: /tmp/hr
       containers:
       - name: oracle-xe
         image: gvenzl/oracle-xe:21.3.0-slim
@@ -22,8 +31,11 @@ spec:
           value: "1234"
         volumeMounts:
         - name: hr-vol
-          mountPath: /opt/hr   # Files inside pod
+          mountPath: /opt/hr
       volumes:
       - name: hr-vol
         persistentVolumeClaim:
           claimName: hr-pvc
+      - name: hr-src
+        configMap:
+          name: hr-files
