@@ -30,5 +30,18 @@ pipeline {
                 }
             }
         }
+
+        stage ('install db') {
+            steps {
+                container('kubectl') {
+                    script {
+                        sh """
+                            POD=$(kubectl get pod -l app=oracle-db -o jsonpath='{.items[0].metadata.name}')
+                            kubectl exec -i $POD -- bash -c "sqlplus system/1234@XEPDB1 @/opt/hr/hr_install.sql"
+                        """
+                    }
+                }
+            }
+        }
     }
 }
